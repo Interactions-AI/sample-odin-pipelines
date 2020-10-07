@@ -1,0 +1,23 @@
+mead-image: &mead-gpu meadml/mead2-pytorch-gpu:latest
+odin-image: &odin interactions/odin-ml:latest
+claim_name: &claim_name data-rw-many
+name: bert-ner
+tasks:
+
+ - name: conll-0
+   image: *mead-gpu
+   pull_policy: Always
+   command: mead-train
+   args:
+    - "--basedir"
+    - "${RUN_PATH}/${TASK_ID}"
+    - "--config"
+    - "${WORK_PATH}/conll-bert.yml"
+    - "--logging"
+    - "${ROOT_PATH}/logging.json"
+   mount:
+      name: data
+      path: "/data"
+      claim: *claim_name
+   num_gpus: 1
+

@@ -1,0 +1,23 @@
+tasks:
+- args:
+  - --basedir
+  - ${RUN_PATH}/${TASK_ID}
+  - --config
+  - ${WORK_PATH}/${TASK_NAME}.yml
+  - --logging
+  - ${ROOT_PATH}/logging.json
+  command: mead-train
+  depends: null
+  id: sst2--sst2
+  image: meadml/mead2-tf2-gpu:latest
+  inputs: null
+  mounts:
+  - claim: data-rw-many
+    name: data
+    path: /data
+  name: sst2
+  num_gpus: 1
+  num_workers: null
+  outputs: null
+  pull_policy: null
+  resource_type: Pod
