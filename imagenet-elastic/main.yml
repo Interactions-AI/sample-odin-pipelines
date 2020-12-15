@@ -1,0 +1,26 @@
+# Run a single step pipeline launching the example from pytorch elastic
+# Workflow arguments are from those provided here:
+# https://raw.githubusercontent.com/pytorch/elastic/master/kubernetes/config/samples/imagenet.yaml
+# If we dont provide a rendezvous endpoint for etcd, Odin will look for one
+# and use it
+tasks:
+- name: imagenet
+  command:
+  - python
+  - -m
+  - torchelastic.distributed.launch
+  args:
+  - "--nproc_per_node=1"
+  - "/workspace/examples/imagenet/main.py"
+  - "--arch=resnet18"
+  - "--epochs=20"
+  - "--batch-size=32"
+  - "--workers=0"
+  - "/workspace/data/tiny-imagenet-200"
+  image: torchelastic/examples:0.2.0
+  pull_policy: Always
+  resource_type: ElasticJob
+  num_workers: 2
+  # If we dont specify the number of GPUs, Odin will assume one GPU per worker
+  # In multiworker mode, this is probably what we want
+
